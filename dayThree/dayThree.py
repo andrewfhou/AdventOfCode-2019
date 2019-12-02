@@ -11,7 +11,7 @@ def partOne():
 def partTwo():
     return 0
 
-print("[ADVENT OF CODE - DAYXX]\n")
+print("[ADVENT OF CODE - DAY03]\n")
 start = CURR_MS()
 
 print("PART ONE - " + str(partOne()))
