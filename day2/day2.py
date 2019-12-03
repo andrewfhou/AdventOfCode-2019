@@ -44,8 +44,6 @@ def runIntcode(inputs, noun, verb):
             inputs[out_i] = arg1 * arg2
             i += argsize
 
-
-
 def partTwo():
     for noun in range(0, 100):
         for verb in range(0, 100):
