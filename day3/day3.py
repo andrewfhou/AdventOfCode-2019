@@ -2,10 +2,16 @@ import time
 
 CURR_MS = lambda: time.time() * 1000
 
+print('+-------------------------+')
+print('| ADVENT OF CODE - DAY 03 |')
+print('+-------------------------+')
+
+START_READ = CURR_MS()
+print('\nPROCESSING FILE... ', end='')
 with open("input.txt") as file:
     wire_a,wire_b = file.read().strip().split()
-
 wire_a, wire_b = [x.split(',') for x in [wire_a, wire_b]]
+print('%.6fms\n' % (CURR_MS() - START_READ))
 
 mov_x = {'U': 0, 'D': 0, 'L': -1, 'R': 1}
 mov_y = {'U': 1, 'D': -1, 'L': 0, 'R': 0}
@@ -43,19 +49,17 @@ def partTwo(points_a, points_b):
         minSteps = min(minSteps, points_a[x] + points_b[x])
     return minSteps
 
-ONE_START = CURR_MS()
-
-print("[ADVENT OF CODE - DAY03]\n")
+START_ONE = CURR_MS()
 
 pts_a = trace_wire(wire_a)
 pts_b = trace_wire(wire_b)
-print("PART ONE - " + str(partOne(pts_a, pts_b)))
-print("PART ONE TIME - %.6fms\n" % (CURR_MS() - ONE_START))
+print("PART ONE: " + str(partOne(pts_a, pts_b)))
+print("TIME TAKEN... %.6fms\n" % (CURR_MS() - START_ONE))
 
-TWO_START = CURR_MS()
+START_TWO = CURR_MS()
 
 pts_a = trace_wire(wire_a)
 pts_b = trace_wire(wire_b)
-print("PART TWO - " + str(partTwo(pts_a, pts_b)))
-print("PART TWO TIME - %.6fms" % (CURR_MS() - TWO_START))
+print("PART TWO: " + str(partTwo(pts_a, pts_b)))
+print("TIME TAKEN... %.6fms" % (CURR_MS() - START_TWO))
 
