@@ -2,8 +2,15 @@ import time
 
 CURR_MS = lambda: time.time() * 1000
 
+print('+-------------------------+')
+print('| ADVENT OF CODE - DAY XX |')
+print('+-------------------------+')
+
+START_READ = CURR_MS()
+print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
     inputs = file.read().strip().split()
+print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def partOne():
     return 0
@@ -11,13 +18,12 @@ def partOne():
 def partTwo():
     return 0
 
-print("[ADVENT OF CODE - DAYXX]\n")
-start = CURR_MS()
+START_ONE = CURR_MS()
 
-print("PART ONE - " + str(partOne()))
-print("PART ONE TIME - %.6fms\n" % (CURR_MS() - start))
+print('PART ONE: ' + str(partOne()))
+print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
-twoStart = CURR_MS()
-print("PART TWO - " + str(partTwo()))
-print("PART TWO TIME - %.6fms" % (CURR_MS() - twoStart))
+START_TWO = CURR_MS()
+print('PART TWO: ' + str(partTwo()))
+print('TIME TAKEN... %.6fms' % (CURR_MS() - START_TWO))
 
