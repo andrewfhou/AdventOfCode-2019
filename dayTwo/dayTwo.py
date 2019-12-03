@@ -6,29 +6,45 @@ with open("input.txt") as file:
     input_data = file.read().strip().split(',')
 
 def partOne():
-    input_data[1] = '12' # noun
-    input_data[2] = '2' # verb
-    runIntcode(input_data)
-    return input_data[0]
+    return runIntcode(input_data, 12, 2)
 
-def runIntcode(inputs):
-    for i in range (0, len(inputs), 4):
+def runIntcode(inputs, noun, verb):
+    inputs = list(map(int, inputs))
+    inputs[1] = noun
+    inputs[2] = verb
+
+    i = 0
+    while True:
         opcode = int(inputs[i])
 
         if opcode == 99:
-            break
+            return inputs[0]
+        elif opcode == 1:
+            argsize = 4
 
-        input1_i = int(inputs[i+1])
-        input2_i = int(inputs[i+2])
-        out_i = int(inputs[i+3])
+            arg1_i = inputs[i+1]
+            arg2_i = inputs[i+2]
+            out_i = inputs[i+3]
 
-        input1 = int(inputs[input1_i])
-        input2 = int(inputs[input2_i])
+            arg1 = inputs[arg1_i]
+            arg2 = inputs[arg2_i]
 
-        if opcode == 1:
-            inputs[out_i] = input1 + input2
+            inputs[out_i] = arg1 + arg2
+            i += argsize
         elif opcode == 2:
-            inputs[out_i] = input1 * input2
+            argsize = 4
+
+            arg1_i = inputs[i+1]
+            arg2_i = inputs[i+2]
+            out_i = inputs[i+3]
+
+            arg1 = inputs[arg1_i]
+            arg2 = inputs[arg2_i]
+
+            inputs[out_i] = arg1 * arg2
+            i += argsize
+
+
 
 def partTwo():
     for noun in range(0, 100):
@@ -36,15 +52,12 @@ def partTwo():
             with open("input.txt") as file:
                 inputtxt = file.read().strip().split(',')
 
-            inputtxt[1] = noun
-            inputtxt[2] = verb
-
             try:
-                runIntcode(inputtxt)
+                result = runIntcode(inputtxt, noun, verb)
             except Exception as e:
                 pass
 
-            if int(inputtxt[0]) == 19690720:
+            if int(result) == 19690720:
                 return "noun: " + str(noun) + " verb: " + str(verb) +\
                     "\nsolution: " + str(100 * noun + verb)
 
