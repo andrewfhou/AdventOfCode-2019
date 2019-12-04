@@ -36,10 +36,11 @@ def has_consec(pw):
 def pair_consec(pw):
     strpw = str(pw)
     prev = int(strpw[0])
-
-    for digit in range(0, 10):
-        if strpw.count(str(digit)) == 2:
-            return True
+    checked = set()
+    for x in strpw:
+        if x not in checked:
+            checked.add(int(x))
+            if strpw.count(str(x)) == 2: return True
     return False
 
 def part_one():
