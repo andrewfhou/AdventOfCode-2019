@@ -25,5 +25,5 @@ print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
 START_TWO = CURR_MS()
 print('PART TWO: ' + str(partTwo()))
-print('TIME TAKEN... %.6fms' % (CURR_MS() - START_TWO))
+print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_TWO))
 
