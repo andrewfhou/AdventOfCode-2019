@@ -12,17 +12,17 @@ with open("input.txt") as file:
     inputs = file.read().strip().split()
 print('%.6fms' % (CURR_MS() - START_READ))
 
-def partOne():
+def part_one():
     return 0
 
-def partTwo():
+def part_two():
     return 0
 
 START_ONE = CURR_MS()
-print('\nPART ONE: ' + str(partOne()))
+print('\nPART ONE: ' + str(part_one()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
 START_TWO = CURR_MS()
-print('PART TWO: ' + str(partTwo()))
+print('PART TWO: ' + str(part_two()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_TWO))
 

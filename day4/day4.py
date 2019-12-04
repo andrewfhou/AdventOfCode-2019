@@ -9,8 +9,8 @@ print('+-------------------------+')
 START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
-    lowerBound, upperBound = file.read().strip().split('-')
-    passRange = range(int(lowerBound), int(upperBound) + 1)
+    lower_bound, upper_bound = file.read().strip().split('-')
+    pass_range = range(int(lower_bound), int(upper_bound) + 1)
 print('%.6fms' % (CURR_MS() - START_READ))
 
 def increasing(pw):
@@ -42,26 +42,26 @@ def pair_consec(pw):
             return True
     return False
 
-def partOne():
-    validCount = 0
-    for pw in passRange:
+def part_one():
+    valid_count = 0
+    for pw in pass_range:
         if increasing(pw) and has_consec(pw):
-            validCount = validCount + 1
-    return validCount
+            valid_count = valid_count + 1
+    return valid_count
 
 
-def partTwo():
-    validCount = 0
-    for pw in passRange:
+def part_two():
+    valid_count = 0
+    for pw in pass_range:
         if increasing(pw) and pair_consec(pw):
-            validCount = validCount + 1
-    return validCount
+            valid_count = valid_count + 1
+    return valid_count
 
 START_ONE = CURR_MS()
-print('\nPART ONE: ' + str(partOne()))
+print('\nPART ONE: ' + str(part_one()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
 START_TWO = CURR_MS()
-print('PART TWO: ' + str(partTwo()))
+print('PART TWO: ' + str(part_two()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_TWO))
 
