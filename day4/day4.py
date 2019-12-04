@@ -6,16 +6,12 @@ print('+-------------------------+')
 print('| ADVENT OF CODE - DAY 04 |')
 print('+-------------------------+')
 
-# START_READ = CURR_MS()
-# print('\nREADING FILE... ',end='')
-# with open("input.txt") as file:
-#     inputs = file.read().strip().split()
-# print('%.6fms\n' % (CURR_MS() - START_READ))
-
-lowerBound = "165432"
-upperBound = "707912"
-# passRange = range(165432, 707912)
-passRange = range(int(lowerBound), int(upperBound) + 1)
+START_READ = CURR_MS()
+print('\nREADING FILE... ',end='')
+with open("input.txt") as file:
+    lowerBound, upperBound = file.read().strip().split('-')
+    passRange = range(int(lowerBound), int(upperBound) + 1)
+print('%.6fms' % (CURR_MS() - START_READ))
 
 def increasing(pw):
     strpw = str(pw)
@@ -27,7 +23,7 @@ def increasing(pw):
             prev = int(strpw[x])
     return True
 
-def hasConsec(pw):
+def has_consec(pw):
     strpw = str(pw)
     prev = int(strpw[0])
     for x in range(1, len(strpw)):
@@ -37,7 +33,7 @@ def hasConsec(pw):
             prev = int(strpw[x])
     return False
 
-def pairedConsec(pw):
+def pair_consec(pw):
     strpw = str(pw)
     prev = int(strpw[0])
     
@@ -49,7 +45,7 @@ def pairedConsec(pw):
 def partOne():
     validCount = 0
     for pw in passRange:
-        if increasing(pw) and hasConsec(pw):
+        if increasing(pw) and has_consec(pw):
             validCount = validCount + 1
     return validCount
 
@@ -57,7 +53,7 @@ def partOne():
 def partTwo():
     validCount = 0
     for pw in passRange:
-        if increasing(pw) and pairedConsec(pw):
+        if increasing(pw) and pair_consec(pw):
             validCount = validCount + 1
     return validCount
 
@@ -68,5 +64,5 @@ print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
 START_TWO = CURR_MS()
 print('PART TWO: ' + str(partTwo()))
-print('TIME TAKEN... %.6fms' % (CURR_MS() - START_TWO))
+print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_TWO))
 
