@@ -10,7 +10,7 @@ START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
     inputs = file.read().strip().split()
-print('%.6fms\n' % (CURR_MS() - START_READ))
+print('%.6fms' % (CURR_MS() - START_READ))
 
 def partOne():
     return 0
@@ -20,7 +20,7 @@ def partTwo():
 
 START_ONE = CURR_MS()
 
-print('PART ONE: ' + str(partOne()))
+print('\nPART ONE: ' + str(partOne()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
 START_TWO = CURR_MS()
