@@ -19,7 +19,6 @@ def partTwo():
     return 0
 
 START_ONE = CURR_MS()
-
 print('\nPART ONE: ' + str(partOne()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 

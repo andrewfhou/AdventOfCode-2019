@@ -36,7 +36,7 @@ def has_consec(pw):
 def pair_consec(pw):
     strpw = str(pw)
     prev = int(strpw[0])
-    
+
     for digit in range(0, 10):
         if strpw.count(str(digit)) == 2:
             return True
@@ -58,7 +58,6 @@ def partTwo():
     return validCount
 
 START_ONE = CURR_MS()
-
 print('\nPART ONE: ' + str(partOne()))
 print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
