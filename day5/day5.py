@@ -40,7 +40,7 @@ def run_intcode(code):
             arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
             arg3 = code[instr_pt+3] # write target
             code[arg3] = arg1 * arg2
-            
+
             instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
         elif opcode == 3: # INPUT
             argsize = 1
