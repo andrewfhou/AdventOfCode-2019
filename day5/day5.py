@@ -53,15 +53,11 @@ def run_intcode(code):
         elif opcode == 5: # JUMP IF TRUE
             arg1 = get_arg(1, instr_pt, False)
             arg2 = get_arg(2, instr_pt, False)
-            if arg1 != 0:
-                instr_pt = arg2
-                jump = True
+            if arg1 != 0: instr_pt = arg2; jump = True
         elif opcode == 6: # JUMP IF FALSE
             arg1 = get_arg(1, instr_pt, False)
             arg2 = get_arg(2, instr_pt, False)
-            if arg1 == 0:
-                instr_pt = arg2
-                jump = True
+            if arg1 == 0: instr_pt = arg2; jump = True
         elif opcode == 7: # LESS THAN
             arg1 = get_arg(1, instr_pt, False)
             arg2 = get_arg(2, instr_pt, False)
