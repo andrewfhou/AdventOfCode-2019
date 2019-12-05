@@ -1,4 +1,5 @@
 import time
+from collections import defaultdict
 
 CURR_MS = lambda: time.time() * 1000
 
@@ -10,105 +11,80 @@ START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
     inputs = file.read().strip().split(',')
-print('%.6fms' % (CURR_MS() - START_READ))
+print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def run_intcode(code):
+    # OPCODES                                            1  2  3  4  5  6  7  8
+    arg_sizes = defaultdict(lambda:0, dict(enumerate([0, 3, 3, 1, 1, 2, 2, 3, 3])))
+
+    def get_arg(arg, instr_pt, write):
+        return code[instr_pt+arg] if write \
+            else (code[code[instr_pt+arg]] if int(instr[-(2+arg)]) == 0 else code[instr_pt+arg])
+
     code = list(map(int, code))
-
+    outputs = []
     instr_pt = 0
+
     while True:
+        jump =  False
         instr = str(code[instr_pt])
-        opcode = int(instr[-2:]) # last 2 digits define the opcode
+        opcode = int(instr[-2:])
+        argsize = arg_sizes[opcode]
+        instr = instr.zfill(argsize + 2)
 
-        if opcode == 99: # HALT
-            return
+        if opcode == 99: return outputs # HALT
         elif opcode == 1: # ADD
-            argsize = 3
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
-            arg3 = code[instr_pt+3] # write target
+            arg1 = get_arg(1, instr_pt, False)
+            arg2 = get_arg(2, instr_pt, False)
+            arg3 = get_arg(3, instr_pt, True)
             code[arg3] = arg1 + arg2
-
-            instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
         elif opcode == 2: # MULTIPLY
-            argsize = 3
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
-            arg3 = code[instr_pt+3] # write target
+            arg1 = get_arg(1, instr_pt, False)
+            arg2 = get_arg(2, instr_pt, False)
+            arg3 = get_arg(3, instr_pt, True)
             code[arg3] = arg1 * arg2
-
-            instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
         elif opcode == 3: # INPUT
-            argsize = 1
-
-            arg1 = code[instr_pt+1] # write target
-            print('INPUT: ', end='') 
-            console_in = int(input()) # input from console
+            arg1 = get_arg(1, instr_pt, True)
+            console_in = int(input('INPUT>'))
             code[arg1] = console_in
-
-            instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
         elif opcode == 4: # OUTPUT
-            argsize = 1
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            print(str(arg1) + ' ', end='') # output to console
-
-            instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
+            arg1 = get_arg(1, instr_pt, False)
+            outputs.append(arg1)
         elif opcode == 5: # JUMP IF TRUE
-            argsize = 2
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
-
-            instr_pt = arg2 if arg1 != 0 else instr_pt + (argsize + 1) # increment instruction pointer
+            arg1 = get_arg(1, instr_pt, False)
+            arg2 = get_arg(2, instr_pt, False)
+            if arg1 != 0:
+                instr_pt = arg2
+                jump = True
         elif opcode == 6: # JUMP IF FALSE
-            argsize = 2
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
-
-            instr_pt = arg2 if arg1 == 0 else instr_pt + (argsize + 1) # increment instruction pointer
+            arg1 = get_arg(1, instr_pt, False)
+            arg2 = get_arg(2, instr_pt, False)
+            if arg1 == 0:
+                instr_pt = arg2
+                jump = True
         elif opcode == 7: # LESS THAN
-            argsize = 3
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
-            arg3 = code[instr_pt+3] # write target
+            arg1 = get_arg(1, instr_pt, False)
+            arg2 = get_arg(2, instr_pt, False)
+            arg3 = get_arg(3, instr_pt, True)
             code[arg3] = 1 if arg1 < arg2 else 0
-
-            instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
         elif opcode == 8: # EQUALS
-            argsize = 3
-            instr = instr.zfill(argsize + 2)
-
-            arg1 = code[code[instr_pt+1]] if int(instr[-3]) == 0 else code[instr_pt+1]
-            arg2 = code[code[instr_pt+2]] if int(instr[-4]) == 0 else code[instr_pt+2]
-            arg3 = code[instr_pt+3] # write target
+            arg1 = get_arg(1, instr_pt, False)
+            arg2 = get_arg(2, instr_pt, False)
+            arg3 = get_arg(3, instr_pt, True)
             code[arg3] = 1 if arg1 == arg2 else 0
-
-            instr_pt = instr_pt + (argsize + 1) # increment instruction pointer
+        if not jump: instr_pt = instr_pt + (argsize + 1)
 
 def part_one():
-    run_intcode(inputs)
+    return run_intcode(inputs)
 
 def part_two():
-    run_intcode(inputs)
+    return run_intcode(inputs)
 
 START_ONE = CURR_MS()
-print('\nPART ONE: ')
-part_one()
-print('\nTIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
+print('PART ONE: ' + str(part_one()))
+print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_ONE))
 
 START_TWO = CURR_MS()
-print('PART TWO: ')
-part_two()
-print('\nTIME TAKEN... %.6fms\n' % (CURR_MS() - START_TWO))
+print('PART TWO: ' + str(part_two()))
+print('TIME TAKEN... %.6fms\n' % (CURR_MS() - START_TWO))
 
