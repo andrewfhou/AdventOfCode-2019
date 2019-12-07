@@ -1,9 +1,9 @@
 from collections import defaultdict
 
-with open("input.txt") as file:
+with open("intcode_test.txt") as file:
     inputs = file.read().strip().split(',')
 
-def run_intcode(code):
+def run_intcode(code, prog_inputs):
     # OPCODES                                            1  2  3  4  5  6  7  8
     arg_sizes = defaultdict(lambda:0, dict(enumerate([0, 3, 3, 1, 1, 2, 2, 3, 3])))
 
@@ -12,6 +12,7 @@ def run_intcode(code):
             else (code[code[instr_pt+arg]] if int(instr[-(2+arg)]) == 0 else code[instr_pt+arg])
 
     code = list(map(int, code))
+    prog_inputs = list(prog_inputs)
     outputs = []
     instr_pt = 0
 
@@ -35,8 +36,8 @@ def run_intcode(code):
             code[arg3] = arg1 * arg2
         elif opcode == 3: # INPUT
             arg1 = get_arg(1, instr_pt, True)
-            console_in = int(input('INPUT>'))
-            code[arg1] = console_in
+            in_command = prog_inputs.pop(0)
+            code[arg1] = in_command
         elif opcode == 4: # OUTPUT
             arg1 = get_arg(1, instr_pt, False)
             outputs.append(arg1)
@@ -64,4 +65,4 @@ def run_intcode(code):
             code[arg3] = 1 if arg1 == arg2 else 0
         if not jump: instr_pt = instr_pt + (argsize + 1)
 
-print(run_intcode(inputs))
+print(run_intcode(inputs, [5]))
