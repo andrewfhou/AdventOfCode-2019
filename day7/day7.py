@@ -78,23 +78,30 @@ def run_intcode(code, prog_inputs):
 
 def part_one():
     max_thruster_sig = 0
-
-    phases = list(itertools.permutations([0,1,2,3,4]))
+    phases = list(itertools.permutations(range(5)))
 
     for phase in phases:
         thruster_sig = \
-            run_intcode(inputs, [int(phase[4]), \
-            run_intcode(inputs, [int(phase[3]), \
-            run_intcode(inputs, [int(phase[2]), \
-            run_intcode(inputs, [int(phase[1]), \
-            run_intcode(inputs, [int(phase[0]), 0])[0]
-                ])[0]   ])[0]   ])[0]   ])[0]
-        # print(phase, thruster_sig)
+            run_intcode(inputs, [phase[4], \
+            run_intcode(inputs, [phase[3], \
+            run_intcode(inputs, [phase[2], \
+            run_intcode(inputs, [phase[1], \
+            run_intcode(inputs, [phase[0], \
+                0])[0]])[0]])[0]])[0]])[0]
         max_thruster_sig = max(thruster_sig, max_thruster_sig);
     return max_thruster_sig
 
 def part_two():
-    return 0
+    max_thruster_sig = 0
+    phases = list(itertools.permutations(range(5,10)))
+    print(phases)
+
+    for phase in phases:
+        first_loop = True
+        amp_outs = [None]*5
+        # TODO: intcode probably needs to be rewritten, maybe use [yield]?
+
+    return max_thruster_sig
 
 START_ONE = CURR_MS()
 print('PART ONE: ' + str(part_one()))
